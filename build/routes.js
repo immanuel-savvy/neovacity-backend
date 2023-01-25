@@ -1,0 +1,108 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+var _admin = require("./route_handlers/admin");
+var _articles = require("./route_handlers/articles");
+var _courses = require("./route_handlers/courses");
+var _sections = require("./route_handlers/sections");
+var _starter = require("./route_handlers/starter");
+var _users = require("./route_handlers/users");
+var router = function router(app) {
+  app.get("/course/:course_id", _courses.course);
+  app.get("/schools/:limit", _courses.schools);
+  app.get("/curriculum/:course", _courses.curriculum);
+  app.get("/get_admins", _admin.get_admins);
+  app.get("/entry", _starter.entry);
+  app.get("/about_statement", _sections.about_statement);
+  app.get("/comments/:article/:skip", _articles.comments);
+  app.get("/article_categories", _articles.article_categories);
+  app.get("/trusted_by", _sections.trusted_by);
+  app.get("/alumni_overview", _sections.alumni_overview);
+  app.get("/newsletter_subscribers", _starter.newsletter_subscribers);
+  app.get("/trending_articles/:limit", _articles.trending_articles);
+  app.get("/user/:user_id", _users.user);
+  app.get("/banner_stuffs", _sections.banner_stuffs);
+  app.get("/article/:article", _articles.article);
+  app.get("/onboarding_stuffs", _sections.onboarding_stuffs);
+  app.get("/best_instructors_stuffs", _sections.best_instructors_stuffs);
+  app.get("/get_student_courses/:student", _courses.get_student_courses);
+  app.post("/update_banner_video", _starter.update_banner_video);
+  app.post("/update_banner_image", _starter.update_banner_image);
+  app.post("/handle_onboarding_stuffs", _sections.handle_onboarding_stuffs);
+  app.post("/handle_best_instructors_stuffs", _sections.handle_best_instructors_stuffs);
+  app.post("/update_school_image_hash", _courses.update_school_image_hash);
+  app.post("/update_course_image_hash", _courses.update_course_image_hash);
+  app.post("/reviews", _sections.reviews);
+  app.post("/remove_faq/:faq", _sections.remove_faq);
+  app.post("/update_faq", _sections.update_faq);
+  app.post("/new_faq", _sections.new_faq);
+  app.post("/faqs", _sections.faqs);
+  app.post("/update_user/:user", _users.update_user);
+  app.post("/update_alumni_overview", _sections.update_alumni_overview);
+  app.post("/approve_review/:review", _sections.approve_review);
+  app.post("/review_like/:course/:review", _courses.review_like);
+  app.post("/review_unlike/:course/:review", _courses.review_unlike);
+  app.post("/review_heart/:course/:review", _courses.review_heart);
+  app.post("/course_reviews", _courses.course_reviews);
+  app.post("/get_courses", function (req, res) {
+    return (0, _courses.courses)({
+      body: {
+        filter: req.body.courses
+      }
+    }, res);
+  });
+  app.post("/articles", _articles.articles);
+  app.post("/signup", _users.signup);
+  app.post("/login", _users.login);
+  app.post("/verify_email", _users.verify_email);
+  app.post("/register_course", _courses.register_course);
+  app.post("/lecture_video_upload", _courses.lecture_video_upload);
+  app.post("/lecture_video_update", _courses.lecture_video_update);
+  app.post("/fetch_lecture_video_url", _courses.fetch_lecture_video_url);
+  app.post("/fetch_lecture_url", _courses.fetch_lecture_url);
+  app.post("/upload_lecture_url", _courses.upload_lecture_url);
+  app.post("/update_lecture_url", _courses.update_lecture_url);
+  app.post("/new_contact_message", _starter.new_contact_message);
+  app.post("/remove_contact_message/:message", _starter.remove_contact_messages);
+  app.post("/contact_message_seen/:message", _starter.contact_message_seen);
+  app.post("/contact_messages", _starter.contact_messages);
+  app.post("/get_replies", _articles.get_replies);
+  app.post("/subscribe_newsletter", _starter.subscribe_newsletter);
+  app.post("/remove_subscriber", _starter.remove_subscriber);
+  app.post("/article_viewed/:article", _articles.article_viewed);
+  app.post("/search_articles", _articles.search_articles);
+  app.post("/new_week", _courses.new_week);
+  app.post("/delete_week", _courses.delete_week);
+  app.post("/new_reply", _articles.new_reply);
+  app.post("/new_comment", _articles.new_comment);
+  app.post("/new_article", _articles.new_article);
+  app.post("/remove_article_category/:category", _articles.remove_article_category);
+  app.post("/add_article_category", _articles.add_article_category);
+  app.post("/update_article_category", _articles.update_article_category);
+  app.post("/update_article", _articles.update_article);
+  app.post("/remove_article/:article", _articles.remove_article);
+  app.post("/create_school", _courses.create_school);
+  app.post("/courses", _courses.courses);
+  app.post("/add_slide", _courses.add_slide);
+  app.post("/update_slide", _courses.update_slide);
+  app.post("/remove_slide", _courses.remove_slide);
+  app.post("/new_review", _sections.new_review);
+  app.post("/remove_review/:review", _sections.remove_review);
+  app.post("/search_courses", _courses.search_courses);
+  app.post("/post_review", _courses.post_review);
+  app.post("/add_course", _courses.add_course);
+  app.post("/remove_course/:course", _courses.remove_course);
+  app.post("/remove_school/:school", _courses.remove_school);
+  app.post("/update_school", _courses.update_school);
+  app.post("/update_course", _courses.update_course);
+  app.post("/create_admin", _admin.create_admin);
+  app.post("/admin_login", _admin.admin_login);
+  app.post("/add_trusted_by", _sections.add_trusted_by);
+  app.post("/remove_trustee/:trustee", _sections.remove_trustee);
+  app.post("/remove_trending_article/:trending", _articles.remove_trending_article);
+};
+var _default = router;
+exports["default"] = _default;
