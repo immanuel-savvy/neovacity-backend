@@ -574,6 +574,27 @@ const fetch_lecture_url = (req, res) => {
   });
 };
 
+const student_already_enrolled = (req, res) => {
+  let { email, student, course } = req.body,
+    enrolled;
+
+  if (!student) {
+    student = USERS.readone({ email });
+    student = student && student._id;
+
+    if (!student) enrolled = false;
+  }
+  if (student) {
+    enrolled = !!STUDENT_COURSES.readone({ student, course });
+  }
+
+  res.json({
+    ok: true,
+    message: "student_already_enrolled",
+    data: { enrolled },
+  });
+};
+
 export {
   new_week,
   delete_week,
@@ -585,6 +606,7 @@ export {
   upload_lecture_url,
   update_lecture_url,
   save_image,
+  student_already_enrolled,
   fetch_lecture_video_url,
   lecture_video_update,
   lecture_video_upload,

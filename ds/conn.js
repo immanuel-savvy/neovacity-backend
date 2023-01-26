@@ -25,6 +25,8 @@ let USERS,
   WEEKS,
   LECTURE_VIDEOS,
   LECTURE_URLS,
+  ADMISSION_QUESTIONS,
+  ADMISSION_EXAMS,
   USERS_HASH;
 
 const ds_conn = () => {
@@ -53,6 +55,8 @@ const ds_conn = () => {
   CONTACT_MESSAGES = gds.folder("contact_messages", null, "interest");
   ARTICLES = gds.folder("articles", null, "categories");
   ARTICLE_CATEGORIES = gds.folder("article_categories");
+  ADMISSION_QUESTIONS = gds.folder("admission_questions", "school");
+  ADMISSION_EXAMS = gds.folder("admission_exams", "school");
   STUDENT_COURSES = gds.folder("student_courses", "student", "course");
   TRENDING_ARTICLES = gds.folder("trending_articles", null, "article");
 };
@@ -67,6 +71,7 @@ export {
   ARTICLE_CATEGORIES,
   ARTICLES,
   TRENDING_ARTICLES,
+  ADMISSION_EXAMS,
   GLOBALS,
   SCHOOLS,
   REVIEWS,
@@ -83,5 +88,6 @@ export {
   WEEKS,
   USERS_HASH,
   ENROLLMENTS,
+  ADMISSION_QUESTIONS,
 };
 export default ds_conn;

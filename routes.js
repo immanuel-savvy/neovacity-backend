@@ -1,5 +1,13 @@
 import { admin_login, create_admin, get_admins } from "./route_handlers/admin";
 import {
+  admission_exam,
+  admission_questions,
+  find_admission_exam,
+  new_question,
+  remove_question,
+  update_question,
+} from "./route_handlers/admissions";
+import {
   add_article_category,
   article,
   articles,
@@ -50,6 +58,7 @@ import {
   fetch_lecture_url,
   upload_lecture_url,
   update_lecture_url,
+  student_already_enrolled,
 } from "./route_handlers/courses";
 import {
   about_statement,
@@ -119,10 +128,15 @@ const router = (app) => {
   app.post("/update_school_image_hash", update_school_image_hash);
   app.post("/update_course_image_hash", update_course_image_hash);
   app.post("/reviews", reviews);
+  app.post("/new_question", new_question);
   app.post("/remove_faq/:faq", remove_faq);
   app.post("/update_faq", update_faq);
   app.post("/new_faq", new_faq);
   app.post("/faqs", faqs);
+  app.post("/admission_exam", admission_exam);
+  app.post("/find_admission_exam", find_admission_exam);
+  app.post("/update_question", update_question);
+  app.post("/remove_question", remove_question);
   app.post("/update_user/:user", update_user);
   app.post("/update_alumni_overview", update_alumni_overview);
   app.post("/approve_review/:review", approve_review);
@@ -145,6 +159,8 @@ const router = (app) => {
   app.post("/upload_lecture_url", upload_lecture_url);
   app.post("/update_lecture_url", update_lecture_url);
   app.post("/new_contact_message", new_contact_message);
+  app.post("/admission_questions", admission_questions);
+  app.post("/student_already_enrolled", student_already_enrolled);
   app.post("/remove_contact_message/:message", remove_contact_messages);
   app.post("/contact_message_seen/:message", contact_message_seen);
   app.post("/contact_messages", contact_messages);
