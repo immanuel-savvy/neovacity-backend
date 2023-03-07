@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.verification = exports.user_generated = exports.generate_newsletter = exports.course_enrolled = void 0;
+exports.verification = exports.user_generated = exports.generate_newsletter = exports.course_enrolled = exports.admission_exam_email = void 0;
 var _functions = require("../functions");
 var _admin = require("./admin");
 var verification = function verification(code, fullname) {
@@ -52,3 +52,7 @@ var course_enrolled = function course_enrolled(course, student, set) {
   }), "</div>");
 };
 exports.course_enrolled = course_enrolled;
+var admission_exam_email = function admission_exam_email(payload) {
+  return "<div>".concat(JSON.stringify(payload), "</div>");
+};
+exports.admission_exam_email = admission_exam_email;

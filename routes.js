@@ -3,8 +3,11 @@ import {
   admission_exam,
   admission_questions,
   find_admission_exam,
+  get_request_to_hire_graduates,
+  hire_graduate_resolved,
   new_question,
   remove_question,
+  request_to_hire_graduate,
   update_question,
 } from "./route_handlers/admissions";
 import {
@@ -73,6 +76,7 @@ import {
   new_faq,
   new_review,
   onboarding_stuffs,
+  post_about_statement,
   remove_faq,
   remove_review,
   remove_trustee,
@@ -194,7 +198,13 @@ const router = (app) => {
   app.post("/update_school", update_school);
   app.post("/update_course", update_course);
   app.post("/create_admin", create_admin);
+
+  app.post("/request_to_hire_graduate", request_to_hire_graduate);
+  app.post("/get_request_to_hire_graduates", get_request_to_hire_graduates);
+  app.post("/hire_graduate_resolved/:request", hire_graduate_resolved);
+
   app.post("/admin_login", admin_login);
+  app.post("/post_about_statement", post_about_statement);
   app.post("/add_trusted_by", add_trusted_by);
   app.post("/remove_trustee/:trustee", remove_trustee);
   app.post("/remove_trending_article/:trending", remove_trending_article);

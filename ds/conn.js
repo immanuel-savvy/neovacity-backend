@@ -25,6 +25,7 @@ let USERS,
   WEEKS,
   LECTURE_VIDEOS,
   LECTURE_URLS,
+  REQUESTS_TO_HIRE_GRADUATE,
   ADMISSION_QUESTIONS,
   ADMISSION_EXAMS,
   USERS_HASH;
@@ -49,6 +50,7 @@ const ds_conn = () => {
   WEEKS = gds.folder("weeks");
   INSTRUCTORS = gds.folder("instructors");
   TRUSTEES = gds.folder("trustees");
+  REQUESTS_TO_HIRE_GRADUATE = gds.folder("request_to_hire_graduate");
   LECTURE_VIDEOS = gds.folder("lecture_videos", "course");
   LECTURE_URLS = gds.folder("lecture_urls", "course");
   ENROLLMENTS = gds.folder("enrollments", "course", "student");
@@ -75,6 +77,7 @@ export {
   GLOBALS,
   SCHOOLS,
   REVIEWS,
+  REQUESTS_TO_HIRE_GRADUATE,
   COMMENTS,
   STUDENT_COURSES,
   REPLIES,

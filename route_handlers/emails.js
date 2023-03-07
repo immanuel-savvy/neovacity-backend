@@ -80,4 +80,14 @@ const course_enrolled = (course, student, set) => {
   })}</div>`;
 };
 
-export { verification, generate_newsletter, user_generated, course_enrolled };
+const admission_exam_email = (payload) => {
+  return `<div>${JSON.stringify(payload)}</div>`;
+};
+
+export {
+  verification,
+  generate_newsletter,
+  admission_exam_email,
+  user_generated,
+  course_enrolled,
+};

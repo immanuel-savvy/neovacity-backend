@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 var _admin = require("./route_handlers/admin");
+var _admissions = require("./route_handlers/admissions");
 var _articles = require("./route_handlers/articles");
 var _courses = require("./route_handlers/courses");
 var _sections = require("./route_handlers/sections");
@@ -36,10 +37,15 @@ var router = function router(app) {
   app.post("/update_school_image_hash", _courses.update_school_image_hash);
   app.post("/update_course_image_hash", _courses.update_course_image_hash);
   app.post("/reviews", _sections.reviews);
+  app.post("/new_question", _admissions.new_question);
   app.post("/remove_faq/:faq", _sections.remove_faq);
   app.post("/update_faq", _sections.update_faq);
   app.post("/new_faq", _sections.new_faq);
   app.post("/faqs", _sections.faqs);
+  app.post("/admission_exam", _admissions.admission_exam);
+  app.post("/find_admission_exam", _admissions.find_admission_exam);
+  app.post("/update_question", _admissions.update_question);
+  app.post("/remove_question", _admissions.remove_question);
   app.post("/update_user/:user", _users.update_user);
   app.post("/update_alumni_overview", _sections.update_alumni_overview);
   app.post("/approve_review/:review", _sections.approve_review);
@@ -66,6 +72,8 @@ var router = function router(app) {
   app.post("/upload_lecture_url", _courses.upload_lecture_url);
   app.post("/update_lecture_url", _courses.update_lecture_url);
   app.post("/new_contact_message", _starter.new_contact_message);
+  app.post("/admission_questions", _admissions.admission_questions);
+  app.post("/student_already_enrolled", _courses.student_already_enrolled);
   app.post("/remove_contact_message/:message", _starter.remove_contact_messages);
   app.post("/contact_message_seen/:message", _starter.contact_message_seen);
   app.post("/contact_messages", _starter.contact_messages);
@@ -99,7 +107,11 @@ var router = function router(app) {
   app.post("/update_school", _courses.update_school);
   app.post("/update_course", _courses.update_course);
   app.post("/create_admin", _admin.create_admin);
+  app.post("/request_to_hire_graduate", _admissions.request_to_hire_graduate);
+  app.post("/get_request_to_hire_graduates", _admissions.get_request_to_hire_graduates);
+  app.post("/hire_graduate_resolved/:request", _admissions.hire_graduate_resolved);
   app.post("/admin_login", _admin.admin_login);
+  app.post("/post_about_statement", _sections.post_about_statement);
   app.post("/add_trusted_by", _sections.add_trusted_by);
   app.post("/remove_trustee/:trustee", _sections.remove_trustee);
   app.post("/remove_trending_article/:trending", _articles.remove_trending_article);

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.upload_lecture_url = exports.update_week = exports.update_slide = exports.update_school_image_hash = exports.update_school = exports.update_lecture_url = exports.update_course_image_hash = exports.update_course = exports.search_courses = exports.schools = exports.save_video = exports.save_image = exports.save_file = exports.review_unlike = exports.review_like = exports.review_heart = exports.remove_video = exports.remove_slide = exports.remove_school = exports.remove_image = exports.remove_file = exports.remove_course = exports.register_course = exports.post_review = exports.new_week = exports.lecture_video_upload = exports.lecture_video_update = exports.get_student_courses = exports.fetch_lecture_video_url = exports.fetch_lecture_url = exports.delete_week = exports.curriculum = exports.create_school = exports.courses = exports.course_reviews = exports.course = exports.add_slide = exports.add_course = void 0;
+exports.upload_lecture_url = exports.update_week = exports.update_slide = exports.update_school_image_hash = exports.update_school = exports.update_lecture_url = exports.update_course_image_hash = exports.update_course = exports.student_already_enrolled = exports.search_courses = exports.schools = exports.save_video = exports.save_image = exports.save_file = exports.review_unlike = exports.review_like = exports.review_heart = exports.remove_video = exports.remove_slide = exports.remove_school = exports.remove_image = exports.remove_file = exports.remove_course = exports.register_course = exports.post_review = exports.new_week = exports.lecture_video_upload = exports.lecture_video_update = exports.get_student_courses = exports.fetch_lecture_video_url = exports.fetch_lecture_url = exports.delete_week = exports.curriculum = exports.create_school = exports.courses = exports.course_reviews = exports.course = exports.add_slide = exports.add_course = void 0;
 var _fs = _interopRequireDefault(require("fs"));
 var _functions = require("generalised-datastore/utils/functions");
 var _conn = require("../ds/conn");
@@ -148,19 +148,18 @@ var remove_course = function remove_course(req, res) {
 };
 exports.remove_course = remove_course;
 var remove_school = function remove_school(req, res) {
-  var master_course = req.params.master_course;
-  var m_course = MASTER_COURSES.remove(master_course);
-  m_course && m_course.image && remove_image(m_course.image);
+  var school = req.params.school;
+  var school_ = _conn.SCHOOLS.remove(school);
+  school_ && school_.image && remove_image(school_.image);
   res.json({
     ok: true,
     message: "master course removed",
-    data: master_course
+    data: school
   });
 };
 exports.remove_school = remove_school;
 var update_course = function update_course(req, res) {
   var course = req.body.course;
-  console.log(course, "WAHTT");
   var course_id = course._id;
   delete course._id;
   delete course.created;
@@ -173,13 +172,13 @@ var update_course = function update_course(req, res) {
       }
     });
   }
-  console.log(course.schools.length && _conn.SCHOOLS.update_several(course.schools, {
+  course.schools.length && _conn.SCHOOLS.update_several(course.schools, {
     courses: {
       $push: course_id
     }
-  }), "HOLLA ME");
+  });
   course.image = save_image(course.image);
-  console.log(_conn.COURSES.update(course_id, course));
+  _conn.COURSES.update(course_id, course);
   res.json({
     ok: true,
     message: "course updated",
@@ -560,19 +559,20 @@ var create_user = function create_user(_ref) {
     user: user._id,
     key: key
   });
-  (0, _users.send_mail)({
-    recipient: email,
-    recipient_name: (0, _users.to_title)("".concat(firstname, " ").concat(lastname)),
-    sender: "signup@udaralinksapp.com",
-    sender_pass: "signupudaralinks",
-    sender_name: "Neovacity Africa",
-    subject: "[Neovacity Africa] Profile Details",
-    html: (0, _emails.user_generated)(user, key)
-  });
+  try {
+    (0, _users.send_mail)({
+      recipient: email,
+      recipient_name: (0, _users.to_title)("".concat(firstname, " ").concat(lastname)),
+      sender: "signup@udaralinksapp.com",
+      sender_pass: "signupudaralinks",
+      sender_name: "Neovacity Africa",
+      subject: "[Neovacity Africa] Profile Details",
+      html: (0, _emails.user_generated)(user, key)
+    });
+  } catch (e) {}
   return user;
 };
 var register_course = function register_course(req, res) {
-  console.log(req.body);
   var _req$body11 = req.body,
     course = _req$body11.course,
     email = _req$body11.email,
@@ -611,15 +611,17 @@ var register_course = function register_course(req, res) {
       $inc: 1
     }
   });
-  (0, _users.send_mail)({
-    recipient: email,
-    recipient_name: (0, _users.to_title)("".concat(firstname, " ").concat(lastname)),
-    sender: "signup@udaralinksapp.com",
-    sender_pass: "signupudaralinks",
-    sender_name: "Neovacity Africa",
-    subject: "[Neovacity Africa] Course Enrollment - ".concat(course_.title),
-    html: (0, _emails.course_enrolled)(course, student, set)
-  });
+  try {
+    (0, _users.send_mail)({
+      recipient: email,
+      recipient_name: (0, _users.to_title)("".concat(firstname, " ").concat(lastname)),
+      sender: "signup@udaralinksapp.com",
+      sender_pass: "signupudaralinks",
+      sender_name: "Neovacity Africa",
+      subject: "[Neovacity Africa] Course Enrollment - ".concat(course_.title),
+      html: (0, _emails.course_enrolled)(course, student, set)
+    });
+  } catch (e) {}
   res.json({
     ok: true,
     message: "course enrolled by student",
@@ -718,3 +720,31 @@ var fetch_lecture_url = function fetch_lecture_url(req, res) {
   });
 };
 exports.fetch_lecture_url = fetch_lecture_url;
+var student_already_enrolled = function student_already_enrolled(req, res) {
+  var _req$body14 = req.body,
+    email = _req$body14.email,
+    student = _req$body14.student,
+    course = _req$body14.course,
+    enrolled;
+  if (!student) {
+    student = _conn.USERS.readone({
+      email: email
+    });
+    student = student && student._id;
+    if (!student) enrolled = false;
+  }
+  if (student) {
+    enrolled = !!_conn.STUDENT_COURSES.readone({
+      student: student,
+      course: course
+    });
+  }
+  res.json({
+    ok: true,
+    message: "student_already_enrolled",
+    data: {
+      enrolled: enrolled
+    }
+  });
+};
+exports.student_already_enrolled = student_already_enrolled;

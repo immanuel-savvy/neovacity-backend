@@ -124,18 +124,17 @@ const remove_course = (req, res) => {
 };
 
 const remove_school = (req, res) => {
-  let { master_course } = req.params;
+  let { school } = req.params;
 
-  let m_course = MASTER_COURSES.remove(master_course);
-  m_course && m_course.image && remove_image(m_course.image);
+  let school_ = SCHOOLS.remove(school);
+  school_ && school_.image && remove_image(school_.image);
 
-  res.json({ ok: true, message: "master course removed", data: master_course });
+  res.json({ ok: true, message: "master course removed", data: school });
 };
 
 const update_course = (req, res) => {
   let { course } = req.body;
 
-  console.log(course, "WAHTT");
   let course_id = course._id;
   delete course._id;
   delete course.created;
@@ -149,17 +148,14 @@ const update_course = (req, res) => {
     });
   }
 
-  console.log(
-    course.schools.length &&
-      SCHOOLS.update_several(course.schools, {
-        courses: { $push: course_id },
-      }),
-    "HOLLA ME"
-  );
+  course.schools.length &&
+    SCHOOLS.update_several(course.schools, {
+      courses: { $push: course_id },
+    });
 
   course.image = save_image(course.image);
 
-  console.log(COURSES.update(course_id, course));
+  COURSES.update(course_id, course);
 
   res.json({ ok: true, message: "course updated", data: { _id: course_id } });
 };
@@ -455,22 +451,22 @@ const create_user = ({ email, firstname, lastname }) => {
   let key = generate_random_string(8, "alnum");
   USERS_HASH.write({ user: user._id, key });
 
-  send_mail({
-    recipient: email,
-    recipient_name: to_title(`${firstname} ${lastname}`),
-    sender: "signup@udaralinksapp.com",
-    sender_pass: "signupudaralinks",
-    sender_name: "Neovacity Africa",
-    subject: `[Neovacity Africa] Profile Details`,
-    html: user_generated(user, key),
-  });
+  try {
+    send_mail({
+      recipient: email,
+      recipient_name: to_title(`${firstname} ${lastname}`),
+      sender: "signup@udaralinksapp.com",
+      sender_pass: "signupudaralinks",
+      sender_name: "Neovacity Africa",
+      subject: `[Neovacity Africa] Profile Details`,
+      html: user_generated(user, key),
+    });
+  } catch (e) {}
 
   return user;
 };
 
 const register_course = (req, res) => {
-  console.log(req.body);
-
   let { course, email, phone, student, firstname, set, lastname } = req.body;
   if (!student) {
     student = USERS.readone({ email });
@@ -487,15 +483,17 @@ const register_course = (req, res) => {
 
   USERS.update(student._id, { courses_enrolled: { $inc: 1 } });
 
-  send_mail({
-    recipient: email,
-    recipient_name: to_title(`${firstname} ${lastname}`),
-    sender: "signup@udaralinksapp.com",
-    sender_pass: "signupudaralinks",
-    sender_name: "Neovacity Africa",
-    subject: `[Neovacity Africa] Course Enrollment - ${course_.title}`,
-    html: course_enrolled(course, student, set),
-  });
+  try {
+    send_mail({
+      recipient: email,
+      recipient_name: to_title(`${firstname} ${lastname}`),
+      sender: "signup@udaralinksapp.com",
+      sender_pass: "signupudaralinks",
+      sender_name: "Neovacity Africa",
+      subject: `[Neovacity Africa] Course Enrollment - ${course_.title}`,
+      html: course_enrolled(course, student, set),
+    });
+  } catch (e) {}
 
   res.json({
     ok: true,
