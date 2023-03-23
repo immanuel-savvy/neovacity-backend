@@ -5,7 +5,7 @@
   "main": "Neovacitys",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel ./route_handlers/courses.js ./route_handlers/admissions.js ./route_handlers/emails.js ./routes.js -d build",
+    "build": "babel ./Neovacity.js -d build",
     "start": "nodemon -r esm Neovacity.js"
   },
   "author": "Savvy",

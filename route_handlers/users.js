@@ -28,17 +28,21 @@ const send_mail = ({
   to,
 }) => {
   let transporter;
+
+  text = text || "";
+  html = html || "";
+  sender = "neovacityafrica@digitaladplanet.com";
+  sender_name = sender_name || "Neovacity Africa";
+
   try {
     transporter = nodemailer.createTransport({
-      host: "66.29.137.48" || "udaralinksapp.com",
+      host: "mail.digitaladplanet.com",
+      name: "digitaladplanet.com",
       port: 465,
       secure: true,
-      tls: {
-        servername: "udaralinksapp.com",
-      },
       auth: {
         user: sender,
-        pass: sender_pass,
+        pass: "neovacitydigiadplanet",
       },
     });
   } catch (e) {}
